@@ -49,7 +49,7 @@
                             </div>
                         </form>
                        
-                        <button class="mt-5 mb-4 mx-2 btn btn-dark float-end mx-2" wire:click.prevent="update()">{{ __('Save') }}</button>
+                        <button class="mt-5 mb-4 mx-2 btn btn-dark float-end" wire:click.prevent="update()">{{ __('Save') }}</button>
                         <button class="mx-2 mt-5 mb-4 btn border-dark float-end" wire:click.prevent="ResetInput()">{{ __('Reset') }}</button>
                            
 
@@ -58,5 +58,7 @@
             </div>
         </div>
     </div>
+
+    
     
 </div>

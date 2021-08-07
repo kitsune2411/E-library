@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\cms;
 use Livewire\Component;
 
-class Petugas extends Component
+class CMSs extends Component
 {
     public $header, $title, $content;
 
@@ -22,7 +22,7 @@ class Petugas extends Component
     {
         if (auth()->user()->level == 1 || auth()->user()->level == 2) {
 
-            return view('livewire.petugas');  
+            return view('livewire.view-cms');  
             
         } else {
             abort(403);
@@ -51,6 +51,7 @@ class Petugas extends Component
         $this->ResetInput();
 
         session()->flash('message', 'Data Updated Successfully.');
+
     }
     
 

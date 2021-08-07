@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Livewire\Petugas;
-use App\Http\Livewire\PinjamBuku;
-use App\Http\Livewire\User;
+use App\Http\Livewire\CrudPetugas;
+use App\Http\Livewire\OutputCMS;
+use App\Http\Livewire\CMSs;
+use App\Http\Livewire\CrudSiswa;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,15 +23,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/user', User::class)
-        ->name('user');
+    Route::get('/crud/petugas', CrudPetugas::class)
+        ->name('crud-petugas');
 
-    Route::get('/cms', Petugas::class)
+    Route::get('/crud/siswa', CrudSiswa::class)
+        ->name('crud-siswa');
+
+    Route::get('/cms', CMSs::class)
         ->name('cms');
 
-    Route::get('/buku', PinjamBuku::class)
+    Route::get('/buku', OutputCMS::class)
         ->name('buku');
-
-    Route::post('/add', [User::class, 'insert'] )
-        ->name('add');
 });

@@ -17,8 +17,11 @@
                     </x-jet-nav-link>
                     @if (auth()->user()->level == 1)
                         <!-- Admin -->
-                        <x-jet-nav-link href="{{ route('user') }}" :active="request()->routeIs('user')">
-                            {{ __('User') }}
+                        <x-jet-nav-link href="{{ route('crud-petugas') }}" :active="request()->routeIs('crud-petugas')">
+                            {{ __('CRUD-Petugas') }}
+                        </x-jet-nav-link>
+                        <x-jet-nav-link href="{{ route('crud-siswa') }}" :active="request()->routeIs('crud-siswa')">
+                            {{ __('CRUD-Siswa') }}
                         </x-jet-nav-link>
                         <x-jet-nav-link href="{{ route('cms') }}" :active="request()->routeIs('cms')">
                             {{ __('CMS') }}
@@ -28,6 +31,9 @@
                         </x-jet-nav-link>
                     @elseif (auth()->user()->level == 2)
                         <!-- Petugas Perpustakaan -->
+                        <x-jet-nav-link href="{{ route('crud-siswa') }}" :active="request()->routeIs('crud-siswa')">
+                            {{ __('CRUD-Siswa') }}
+                        </x-jet-nav-link>
                         <x-jet-nav-link href="{{ route('cms') }}" :active="request()->routeIs('cms')">
                             {{ __('CMS') }}
                         </x-jet-nav-link>
@@ -168,8 +174,11 @@
             </x-jet-responsive-nav-link>
             @if (auth()->user()->level == 1)
                 <!-- Admin -->
-                <x-jet-nav-link href="{{ route('user') }}" :active="request()->routeIs('user')">
-                    {{ __('User') }}
+                <x-jet-nav-link href="{{ route('crud-petugas') }}" :active="request()->routeIs('crud-petugas')">
+                    {{ __('crud-petugas') }}
+                </x-jet-nav-link>
+                <x-jet-nav-link href="{{ route('crud-siswa') }}" :active="request()->routeIs('crud-siswa')">
+                    {{ __('crud-siswa') }}
                 </x-jet-nav-link>
                 <x-jet-nav-link href="{{ route('cms') }}" :active="request()->routeIs('cms')">
                     {{ __('CMS') }}

@@ -11,13 +11,22 @@ class Users extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nama', 'email', 'level', 'password'
+        'nama','username', 'email', 'level', 'password'
     ];
 
 
-    public function AllData()
+    public function AllDataPetugas()
     {
-        return DB::table('users')->get();
+        return DB::table('users')
+            ->where('level', 2)
+            ->get();
+    }
+
+    public function AllDataSiswa()
+    {
+        return DB::table('users')
+            ->where('level', 3)
+            ->get();
     }
 
     public function DeleteData($id)

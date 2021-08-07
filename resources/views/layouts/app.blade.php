@@ -27,6 +27,10 @@
 
         <link rel="stylesheet" href="sweetalert2.min.css">
 
+        {{-- toast --}}
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
         @livewireStyles
 
         <!-- Scripts -->
@@ -69,5 +73,16 @@
         @stack('modals')
 
         @livewireScripts
+        <script>
+
+            window.addEventListener('alert', event => { 
+                toastr[event.detail.type](event.detail.message, 
+                event.detail.title ?? ''), toastr.options = {
+                    "closeButton": true,
+                    "progressBar": true,           
+                }      
+            });
+            
+            </script>
     </body>
 </html>
