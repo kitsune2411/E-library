@@ -25,8 +25,6 @@
     
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
-        <link rel="stylesheet" href="sweetalert2.min.css">
-
         {{-- toast --}}
         <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -35,8 +33,6 @@
 
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
-
-        <script src="sweetalert2.min.js"></script>
 
         <!-- Optional JavaScript; choose one of the two! -->
 

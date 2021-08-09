@@ -11,7 +11,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="pb-10 px-12">
                     <button type="button" wire:click="ResetInput()" class="btn btn-success m-4" data-toggle="modal" data-target="#AddModal">Create siswa</button>
-                    <table class="table table-auto mx-3">
+                    <table class="table table-auto m-2">
                         <thead>
                             <th class="px-4 py-2 w-20">No</th>
                             <th>Name</th>
@@ -72,7 +72,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add New Siswa</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Create New Siswa</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true close-btn">&times;</span>
                 </button>
@@ -108,7 +108,10 @@
                   </div> --}}
                   <div class="mb-3">
                     <label for="password" class="col-form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" wire:model="password" required>
+                    <input type="password" class="form-control" id="password" name="password" wire:model="password" aria-describedby="passwordHelpBlock" required>
+                    <div id="passwordHelpBlock" class="form-text">
+                      Your password must be 8 or more characters long.
+                    </div>
                   </div>
                 </form>
               </div>

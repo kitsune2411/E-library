@@ -18,26 +18,20 @@
                     @if (auth()->user()->level == 1)
                         <!-- Admin -->
                         <x-jet-nav-link href="{{ route('crud-petugas') }}" :active="request()->routeIs('crud-petugas')">
-                            {{ __('CRUD-Petugas') }}
+                            {{ __('Petugas') }}
                         </x-jet-nav-link>
                         <x-jet-nav-link href="{{ route('crud-siswa') }}" :active="request()->routeIs('crud-siswa')">
-                            {{ __('CRUD-Siswa') }}
+                            {{ __('Siswa') }}
                         </x-jet-nav-link>
-                        <x-jet-nav-link href="{{ route('cms') }}" :active="request()->routeIs('cms')">
-                            {{ __('CMS') }}
-                        </x-jet-nav-link>
-                        <x-jet-nav-link href="{{ route('buku') }}" :active="request()->routeIs('buku')">
+                        <x-jet-nav-link href="{{ route('crud-buku') }}" :active="request()->routeIs('crud-buku')">
                             {{ __('Buku') }}
                         </x-jet-nav-link>
                     @elseif (auth()->user()->level == 2)
                         <!-- Petugas Perpustakaan -->
                         <x-jet-nav-link href="{{ route('crud-siswa') }}" :active="request()->routeIs('crud-siswa')">
-                            {{ __('CRUD-Siswa') }}
+                            {{ __('Siswa') }}
                         </x-jet-nav-link>
-                        <x-jet-nav-link href="{{ route('cms') }}" :active="request()->routeIs('cms')">
-                            {{ __('CMS') }}
-                        </x-jet-nav-link>
-                        <x-jet-nav-link href="{{ route('buku') }}" :active="request()->routeIs('buku')">
+                        <x-jet-nav-link href="{{ route('crud-buku') }}" :active="request()->routeIs('crud-buku')">
                             {{ __('Buku') }}
                         </x-jet-nav-link>
                     @elseif (auth()->user()->level == 3)
@@ -173,32 +167,29 @@
                 {{ __('Dashboard') }}
             </x-jet-responsive-nav-link>
             @if (auth()->user()->level == 1)
-                <!-- Admin -->
-                <x-jet-nav-link href="{{ route('crud-petugas') }}" :active="request()->routeIs('crud-petugas')">
-                    {{ __('crud-petugas') }}
-                </x-jet-nav-link>
-                <x-jet-nav-link href="{{ route('crud-siswa') }}" :active="request()->routeIs('crud-siswa')">
-                    {{ __('crud-siswa') }}
-                </x-jet-nav-link>
-                <x-jet-nav-link href="{{ route('cms') }}" :active="request()->routeIs('cms')">
-                    {{ __('CMS') }}
-                </x-jet-nav-link>
-                <x-jet-nav-link href="{{ route('buku') }}" :active="request()->routeIs('buku')">
-                    {{ __('Buku') }}
-                </x-jet-nav-link>
+            <!-- Admin -->
+            <x-jet-nav-link href="{{ route('crud-petugas') }}" :active="request()->routeIs('crud-petugas')">
+                {{ __('Petugas') }}
+            </x-jet-nav-link>
+            <x-jet-nav-link href="{{ route('crud-siswa') }}" :active="request()->routeIs('crud-siswa')">
+                {{ __('Siswa') }}
+            </x-jet-nav-link>
+            <x-jet-nav-link href="{{ route('crud-buku') }}" :active="request()->routeIs('crud-buku')">
+                {{ __('Buku') }}
+            </x-jet-nav-link>
             @elseif (auth()->user()->level == 2)
-                <!-- Petugas Perpustakaan -->
-                <x-jet-nav-link href="{{ route('cms') }}" :active="request()->routeIs('cms')">
-                    {{ __('CMS') }}
-                </x-jet-nav-link>
-                <x-jet-nav-link href="{{ route('buku') }}" :active="request()->routeIs('buku')">
-                    {{ __('Buku') }}
-                </x-jet-nav-link>
+            <!-- Petugas Perpustakaan -->
+            <x-jet-nav-link href="{{ route('crud-siswa') }}" :active="request()->routeIs('crud-siswa')">
+                {{ __('Siswa') }}
+            </x-jet-nav-link>
+            <x-jet-nav-link href="{{ route('crud-buku') }}" :active="request()->routeIs('crud-buku')">
+                {{ __('Buku') }}
+            </x-jet-nav-link>
             @elseif (auth()->user()->level == 3)
-                <!-- Siswa -->
-                <x-jet-nav-link href="{{ route('buku') }}" :active="request()->routeIs('buku')">
-                    {{ __('Buku') }}
-                </x-jet-nav-link>
+            <!-- Siswa -->
+            <x-jet-nav-link href="{{ route('buku') }}" :active="request()->routeIs('buku')">
+                {{ __('Buku') }}
+            </x-jet-nav-link>
             @endif
         </div>
 

@@ -3,7 +3,9 @@
 use App\Http\Livewire\CrudPetugas;
 use App\Http\Livewire\OutputCMS;
 use App\Http\Livewire\CMSs;
+use App\Http\Livewire\CrudBuku;
 use App\Http\Livewire\CrudSiswa;
+use App\Http\Livewire\ListBuku;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,9 +31,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/crud/siswa', CrudSiswa::class)
         ->name('crud-siswa');
 
+    Route::get('/crud/buku', CrudBuku::class)
+        ->name('crud-buku');
+
+    Route::get('/buku', ListBuku::class)
+        ->name('buku');
+
     Route::get('/cms', CMSs::class)
         ->name('cms');
 
-    Route::get('/buku', OutputCMS::class)
-        ->name('buku');
+    Route::get('/cms/output', OutputCMS::class)
+        ->name('outputCMS');
 });
