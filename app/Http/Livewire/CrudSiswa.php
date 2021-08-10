@@ -49,7 +49,7 @@ class CrudSiswa extends Component
             $this->validate([
                 'name' => 'required',
                 'username' => 'required|unique:users,username',
-                'nis' => 'required',
+                'nis' => 'required|unique:users,nis',
                 'email' => 'required|unique:users,email',
                 // 'level' => 'required',
                 'password' => 'required|min:8',
@@ -92,9 +92,9 @@ class CrudSiswa extends Component
         try {
             $this->validate([
                 'name' => 'required',
-                'username' => 'required|unique:users,username',
+                'username' => 'required',
                 'nis' => 'required',
-                'email' => 'required|unique:users,email',
+                'email' => 'required',
                 // 'level' => 'required',
                 // 'password' => 'required|min:8',
             ]);

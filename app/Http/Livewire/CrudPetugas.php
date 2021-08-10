@@ -87,8 +87,8 @@ class CrudPetugas extends Component
         try {
             $this->validate([
                 'name' => 'required',
-                'username' => 'required|unique:users,username',
-                'email' => 'required|unique:users,email',
+                'username' => 'required',
+                'email' => 'required',
                 // 'level' => 'required',
                 // 'password' => 'required|min:8',
             ]);
