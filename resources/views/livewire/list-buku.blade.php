@@ -15,7 +15,7 @@
                         <input type="text" id="search" class="form-control" wire:model="searchterm" placeholder="Type to search buku..."/>
                     </div>
                     @foreach ($buku as $data)
-                    <div class="card m-3">
+                    <div class="card m-3" wire:poll.visible>
                         <div class="row g-0">
                             <div class="col-md-4">
                                 <img loading="lazy" src="{{ asset('storage/'. $data->foto_buku) }}" class="img-fluid rounded-start"
