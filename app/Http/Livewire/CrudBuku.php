@@ -6,11 +6,14 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use App\Models\buku;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class CrudBuku extends Component
 {
     use WithFileUploads;
+    use WithPagination;
 
+    public $searchterm;
     public $deleteId = '';
     public $deletefoto = null;
     public $editId = '';
@@ -20,14 +23,25 @@ class CrudBuku extends Component
     {
         if (auth()->user()->level == 1 || auth()->user()->level == 2 ) {
 
+            $searchterm ='%'. $this->searchterm. '%';
             $data = [
-                'buku' => DB::table('buku')->get()
+                'buku' => DB::table('buku')
+                        ->where('judul_buku', 'like', $searchterm)
+                        ->orWhere('penulis', 'like', $searchterm)
+                        ->orWhere('penerbit', 'like', $searchterm)
+                        ->orWhere('tahun_terbit', 'like', $searchterm)
+                        ->paginate(5)
             ];
 
             return view('livewire.crud-buku', $data);
         } else {
             abort(403);
         }
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
     }
 
     public function ResetInput()

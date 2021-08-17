@@ -7,9 +7,13 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Query\Builder;
+use Livewire\WithPagination;
 
 class CrudPetugas extends Component
 {
+    use WithPagination;
+
+    public $searchterm;
     public $deleteId = '';
     public $editId = '';
     public $name, $username, $email, $level, $password;
@@ -23,8 +27,22 @@ class CrudPetugas extends Component
     {
         if (auth()->user()->level == 1) {
 
+            $searchterm ='%'. $this->searchterm. '%'; 
             $data = [
-                'user' => $this->UserModel->AllDataPetugas(),
+                'user' => DB::table('users')
+                            ->where(function($query) use ($searchterm) {
+                                $query->where('level', 2)
+                                      ->where('name', 'like', $searchterm);
+                            })
+                            ->orWhere(function($query) use ($searchterm) {
+                                $query->where('level', 2)
+                                      ->where('username', 'like', $searchterm);
+                            })
+                            ->orWhere(function($query) use ($searchterm) {
+                                $query->where('level', 2)
+                                      ->where('email', 'like', $searchterm);
+                            })
+                            ->paginate(5),
             ];
     
             return view('livewire.crud-petugas', $data);
@@ -33,6 +51,11 @@ class CrudPetugas extends Component
             abort(403);
         }
 
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
     }
 
     public function ResetInput()

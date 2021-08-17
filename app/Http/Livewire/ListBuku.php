@@ -4,10 +4,18 @@ namespace App\Http\Livewire;
 
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ListBuku extends Component
 {
+    use WithPagination;
+
     public $searchterm;
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
     public function render()
     {
@@ -18,7 +26,7 @@ class ListBuku extends Component
                         ->orWhere('penulis', 'like', $searchterm)
                         ->orWhere('penerbit', 'like', $searchterm)
                         ->orWhere('tahun_terbit', 'like', $searchterm)
-                        ->get()
+                        ->paginate(5)
         ];
         return view('livewire.list-buku', $data);
     }

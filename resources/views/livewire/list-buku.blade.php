@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     @endforeach
-    
+                    {{ $buku->links() }}
                 </div>
             </div>
         </div>

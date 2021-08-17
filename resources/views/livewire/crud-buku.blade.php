@@ -12,6 +12,9 @@
                 <div class="pb-10 px-12">
                     <button type="button" wire:click="ResetInput()" class="btn btn-success m-4" data-toggle="modal" data-target="#AddModal">Add New Buku</button>
                     <button type="button" wire:click="ListBuku()" class="btn btn-outline-secondary float-end m-4" >View As Siswa</button>
+                    <div class="mb-3">
+                      <input type="text" id="search" class="form-control" wire:model="searchterm" placeholder="Type to search buku..."/>
+                    </div>
                     <table class="table table-fixed m-2">
                         <thead>
                             <th class="py-4 w-1/12">No</th>
@@ -23,10 +26,9 @@
                             <th class="p-4 w-2/12">Action</th>
                         </thead>
                         <tbody>
-                            <?php $no=1 ?>
                             @foreach ($buku as $data)
                             <tr>
-                                <td class="px-4">{{ $no++ }}</td>
+                                <td class="px-4">{{ $loop->iteration + (($buku->currentPage() -1) * $buku->perPage()) }}</td>
                                 <td>{{ $data->judul_buku }}</td>
                                 <td>{{ $data->penulis }}</td>
                                 <td>{{ $data->penerbit }}</td>
@@ -42,6 +44,7 @@
                             @endforeach
                         </tbody>
                     <table>
+                    {{ $buku->links() }}
                 </div>
             </div>
         </div>
@@ -83,7 +86,6 @@
                 </button>
               </div>
               <div class="modal-body">
-                <x-jet-validation-errors class="mb-4" />
                 <form enctype="multipart/form-data">
                     <div class="mb-3">
                       <label for="judul_buku" class="col-form-label">Judul Buku</label>

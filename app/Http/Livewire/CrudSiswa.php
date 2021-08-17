@@ -6,9 +6,13 @@ use Livewire\Component;
 use App\Models\Users;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Livewire\WithPagination;
 
 class CrudSiswa extends Component
 {
+    use WithPagination;
+
+    public $searchterm;
     public $deleteId = '';
     public $editId = '';
     public $name, $username, $nis, $email, $level, $password;
@@ -22,8 +26,26 @@ class CrudSiswa extends Component
     {
         if (auth()->user()->level == 1 || auth()->user()->level == 2) {
 
+            $searchterm ='%'. $this->searchterm. '%';
             $data = [
-                'user' => $this->UserModel->AllDataSiswa(),
+                'user' => DB::table('users')
+                            ->where(function($query) use ($searchterm) {
+                                $query->where('level', 3)
+                                    ->where('name', 'like', $searchterm);
+                            })
+                            ->orWhere(function($query) use ($searchterm) {
+                                $query->where('level', 3)
+                                    ->where('username', 'like', $searchterm);
+                            })
+                            ->orWhere(function($query) use ($searchterm) {
+                                $query->where('level', 3)
+                                    ->where('email', 'like', $searchterm);
+                            })
+                            ->orWhere(function($query) use ($searchterm) {
+                                $query->where('level', 3)
+                                    ->where('nis', 'like', $searchterm);
+                            })
+                            ->paginate(5),
             ];
     
             return view('livewire.crud-siswa', $data);
@@ -32,6 +54,11 @@ class CrudSiswa extends Component
             abort(403);
         }
 
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
     }
 
     public function ResetInput()

@@ -11,6 +11,9 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="pb-10 px-12">
                     <button type="button" wire:click="ResetInput()" class="btn btn-success m-4" data-toggle="modal" data-target="#AddModal">Create siswa</button>
+                    <div class="mb-3">
+                      <input type="text" id="search" class="form-control" wire:model="searchterm" placeholder="Type to search siswa..."/>
+                  </div>
                     <table class="table table-auto m-2">
                         <thead>
                             <th class="px-4 py-2 w-20">No</th>
@@ -21,10 +24,9 @@
                             <th class="px-4 py-2">Action</th>
                         </thead>
                         <tbody>
-                            <?php $no=1 ?>
                             @foreach ($user as $data)
                             <tr>
-                                <td class="px-4">{{ $no++ }}</td>
+                                <td class="px-4">{{ $loop->iteration + (($user->currentPage() -1) * $user->perPage())  }}</td>
                                 <td>{{ $data->name }}</td>
                                 <td>{{ $data->username }}</td>
                                 <td>{{ $data->nis }}</td>
@@ -37,6 +39,7 @@
                             @endforeach
                         </tbody>
                     <table>
+                    {{ $user->links() }}
                 </div>
             </div>
         </div>
