@@ -27,7 +27,7 @@
                         </thead>
                         <tbody>
                             @foreach ($buku as $data)
-                            <tr>
+                            <tr wire:poll.visible>
                                 <td class="px-4">{{ $loop->iteration + (($buku->currentPage() -1) * $buku->perPage()) }}</td>
                                 <td>{{ $data->judul_buku }}</td>
                                 <td>{{ $data->penulis }}</td>
@@ -105,15 +105,21 @@
                     </div>
                     <div class="mb-2">
                       <label for="foto_buku" class="col-form-label">Foto Buku</label>
-                      <input type="file" class="form-control" accept="image/*" id="foto_buku" name="foto_buku" wire:model="foto_buku" aria-describedby="fotofile">
+                      <div class="input-group">
+                        <input type="file" class="form-control" aria-describedby="inputGroupFileAddon04" aria-label="Upload" accept="image/*" id="foto_buku" name="foto_buku" wire:model="foto_buku" aria-describedby="fotofile">
+                        <button class="btn btn-outline-secondary" type="button" id="btn-clear">Clear</button>
+                      </div>
                       <small id="fotofile" class="form-text text-muted muted">Supported file: jpg,jpeg,png,svg,gif,jfif</small>
                     </div>
-                    <div wire:loading wire:target="foto_buku"><b>Uploading...</b></div>
+                    <div wire:loading wire:target="foto_buku" class="d-flex align-items-center">
+                      <strong wire:loading wire:target="foto_buku">Loading...</strong>
+                      <div wire:loading wire:target="foto_buku" class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                    </div>
                 </form>
               </div>
               <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button wire:loading.class="disabled" wire:click.prevent="insert()" class="btn btn-success close-modal" data-dismiss="modal"
+                <button wire:loading.attr="disabled" wire:target="foto_buku" wire:click.prevent="insert()" class="btn btn-success close-modal" data-dismiss="modal"
                 >{{ __('Submit') }}</button>
               </div>
             </div>
@@ -132,7 +138,6 @@
                 </button>
               </div>
               <div class="modal-body">
-                <x-jet-validation-errors class="mb-4" />
                 <form enctype="multipart/form-data">
                     <div class="mb-3">
                       <label for="judul_buku" class="col-form-label">Judul Buku</label>
@@ -150,19 +155,36 @@
                       <label for="tahun_terbit" class="col-form-label">Tahun Terbit</label>
                       <input type="text" class="form-control" id="terbit" name="tahun_terbit" wire:model="tahun_terbit" required>
                     </div>
-                    {{-- <div class="mb-3">
+                    <div class="mb-3">
                       <label for="foto_buku" class="col-form-label">Foto Buku</label>
-                      <input type="file" class="form-control" accept="image/*" id="foto_buku" name="foto_buku" wire:model="foto_buku">
+                      <div class="input-group">
+                        <input type="file" class="form-control" aria-describedby="inputGroupFileAddon04" aria-label="Upload" accept="image/*" id="foto_buku" name="foto_buku" wire:model="foto_buku" aria-describedby="fotofile">
+                        <button class="btn btn-outline-secondary" type="button" id="btn-clear">Clear</button>
+                      </div>
+                      <small id="fotofile" class="form-text text-muted muted">Supported file: jpg,jpeg,png,svg,gif,jfif</small>
                     </div> 
-                    <div wire:loading wire:target="foto_buku">Uploading...</div>--}}
+                    <div wire:loading wire:target="foto_buku" class="d-flex align-items-center">
+                      <strong wire:loading wire:target="foto_buku">Loading...</strong>
+                      <div wire:loading wire:target="foto_buku" class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                    </div>
                 </form>
               </div>
               <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button wire:click.prevent="edit()" class="btn btn-primary close-modal" data-dismiss="modal"
+                <button wire:loading.attr="disabled" wire:target="foto_buku" wire:click.prevent="edit()" class="btn btn-primary close-modal" data-dismiss="modal"
                 >{{ __('Submit') }}</button>
               </div>
             </div>
           </div>
     </div>
+
+    <script>
+      $(document).ready(function() {
+        $('#btn-clear').on('click', function(e) {
+          var $el = $('#foto_buku');
+          $el.wrap('<form>').closest('form').get(0).reset();
+          $el.unwrap();
+        });
+      });
+    </script>
 </div>

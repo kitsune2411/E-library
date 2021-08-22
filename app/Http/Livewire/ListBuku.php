@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use Illuminate\Support\Facades\DB;
+use App\Models\book;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,7 +13,7 @@ class ListBuku extends Component
 
     public $searchterm;
 
-    public function updatingSearch()
+    public function updatingSearchterm()
     {
         $this->resetPage();
     }
@@ -21,8 +22,7 @@ class ListBuku extends Component
     {
         $searchterm ='%'. $this->searchterm. '%';
         $data = [
-            'buku' => DB::table('buku')
-                        ->where('judul_buku', 'like', $searchterm)
+            'buku' => book::where('judul_buku', 'like', $searchterm)
                         ->orWhere('penulis', 'like', $searchterm)
                         ->orWhere('penerbit', 'like', $searchterm)
                         ->orWhere('tahun_terbit', 'like', $searchterm)

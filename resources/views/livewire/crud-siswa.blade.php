@@ -10,7 +10,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="pb-10 px-12">
-                    <button type="button" wire:click="ResetInput()" class="btn btn-success m-4" data-toggle="modal" data-target="#AddModal">Create siswa</button>
+                    <button type="button" wire:click="ResetInput()" class="btn btn-success m-4" data-toggle="modal" data-target="#AddModal">Create New siswa</button>
                     <div class="mb-3">
                       <input type="text" id="search" class="form-control" wire:model="searchterm" placeholder="Type to search siswa..."/>
                   </div>
@@ -25,7 +25,7 @@
                         </thead>
                         <tbody>
                             @foreach ($user as $data)
-                            <tr>
+                            <tr wire:poll.visible>
                                 <td class="px-4">{{ $loop->iteration + (($user->currentPage() -1) * $user->perPage())  }}</td>
                                 <td>{{ $data->name }}</td>
                                 <td>{{ $data->username }}</td>

@@ -3,7 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Models\Users;
+use App\Models\Users as Siswa;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Livewire\WithPagination;
@@ -17,19 +17,14 @@ class CrudSiswa extends Component
     public $editId = '';
     public $name, $username, $nis, $email, $level, $password;
     
-    public function __construct()
-    {
-        $this->UserModel = new Users();
-    }
-
     public function render()
     {
         if (auth()->user()->level == 1 || auth()->user()->level == 2) {
 
             $searchterm ='%'. $this->searchterm. '%';
             $data = [
-                'user' => DB::table('users')
-                            ->where(function($query) use ($searchterm) {
+                'user' => Siswa::
+                            where(function($query) use ($searchterm) {
                                 $query->where('level', 3)
                                     ->where('name', 'like', $searchterm);
                             })
@@ -56,7 +51,7 @@ class CrudSiswa extends Component
 
     }
 
-    public function updatingSearch()
+    public function updatingSearchterm()
     {
         $this->resetPage();
     }
@@ -78,11 +73,10 @@ class CrudSiswa extends Component
                 'username' => 'required|unique:users,username',
                 'nis' => 'required|unique:users,nis',
                 'email' => 'required|unique:users,email',
-                // 'level' => 'required',
                 'password' => 'required|min:8',
             ]);
 
-            DB::table('users')->insert([
+            Siswa::create([
                 'name' => $this->name,
                 'username' => $this->username,
                 'nis' => $this->nis,
@@ -104,13 +98,12 @@ class CrudSiswa extends Component
 
     public function editId($id)
     {
-        $edit = Users::findOrFail($id);
+        $edit = Siswa::findOrFail($id);
         $this->editId = $id;
         $this->name = $edit->name;
         $this->nis = $edit->nis;
         $this->username = $edit->username;
         $this->email = $edit->email;
-        // $this->level = $edit->level;
         // $this->password = $edit->password;
     }
 
@@ -119,21 +112,18 @@ class CrudSiswa extends Component
         try {
             $this->validate([
                 'name' => 'required',
-                'username' => 'required',
-                'nis' => 'required',
-                'email' => 'required',
-                // 'level' => 'required',
+                'username' => 'required|unique:users,username,'.$this->editId,
+                'nis' => 'required|unique:users,nis,'.$this->editId,
+                'email' => 'required|unique:users,email,'.$this->editId,
                 // 'password' => 'required|min:8',
             ]);
 
-            DB::table('users')
-                ->where('id', $this->editId)
+            Siswa::where('id', $this->editId)
                 ->update([
                 'name' => $this->name,
                 'username' => $this->username,
                 'nis' => $this->nis,
                 'email' => $this->email,
-                // 'level' => $this->level,
                 // 'password' => Hash::make($this->password),
             ]);
 
@@ -155,7 +145,7 @@ class CrudSiswa extends Component
     public function delete()
     {
         try {
-            $this->UserModel->DeleteData($this->deleteId);
+            Siswa::where('id', $this->deleteId)->delete();
             $this->alertDeleteSuccess();
         } catch (\Throwable $th) {
             $this->alertError();

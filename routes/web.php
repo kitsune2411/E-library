@@ -5,6 +5,7 @@ use App\Http\Livewire\OutputCMS;
 use App\Http\Livewire\CMSs;
 use App\Http\Livewire\CrudBuku;
 use App\Http\Livewire\CrudSiswa;
+use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\ListBuku;
 use Illuminate\Support\Facades\Route;
 
@@ -21,9 +22,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
-    Route::get('/', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/', Dashboard::class)
+        ->name('dashboard');
 
     Route::get('/crud/petugas', CrudPetugas::class)
         ->name('crud-petugas');

@@ -10,7 +10,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="pb-10 px-12">
-                    <button type="button" wire:click="ResetInput()" class="btn btn-success m-4" data-toggle="modal" data-target="#AddModal">Create Petugas</button>
+                    <button type="button" wire:click="ResetInput()" class="btn btn-success m-4" data-toggle="modal" data-target="#AddModal">Create New Petugas</button>
                     <div class="mb-3">
                       <input type="text" id="search" class="form-control" wire:model="searchterm" placeholder="Type to search petugas..."/>
                   </div>
@@ -23,9 +23,8 @@
                             <th class="px-4 py-2">Action</th>
                         </thead>
                         <tbody>
-                            <?php $no=1 ?>
                             @foreach ($user as $data)
-                            <tr>
+                            <tr wire:poll.visible>
                                 <td class="px-4">{{ $loop->iteration + (($user->currentPage() -1) * $user->perPage()) }}</td>
                                 <td>{{ $data->name }}</td>
                                 <td>{{ $data->username }}</td>
@@ -80,7 +79,6 @@
                 </button>
               </div>
               <div class="modal-body">
-                <x-jet-validation-errors class="mb-4" />
                 <form>
                   @csrf
                   <div class="mb-3">
@@ -106,7 +104,7 @@
                   </div> --}}
                   <div class="mb-3">
                     <label for="password" class="col-form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" wire:model="password" aria-describedby="passwordHelpBlock" required>
+                    <input type="password" class="form-control" id="password" name="password" wire:model.debounce.500ms="password" aria-describedby="passwordHelpBlock" required>
                     <div id="passwordHelpBlock" class="form-text">
                       Your password must be 8 or more characters long.
                     </div>
@@ -134,7 +132,6 @@
                 </button>
               </div>
               <div class="modal-body">
-                <x-jet-validation-errors class="mb-4" />
                 <form>
                   @csrf
                   <div class="mb-3">

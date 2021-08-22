@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Users;
+use App\Models\Users as Petugas;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
@@ -17,11 +17,6 @@ class CrudPetugas extends Component
     public $deleteId = '';
     public $editId = '';
     public $name, $username, $email, $level, $password;
-    
-    public function __construct()
-    {
-        $this->UserModel = new Users();
-    }
 
     public function render()
     {
@@ -29,8 +24,8 @@ class CrudPetugas extends Component
 
             $searchterm ='%'. $this->searchterm. '%'; 
             $data = [
-                'user' => DB::table('users')
-                            ->where(function($query) use ($searchterm) {
+                'user' => Petugas::
+                            where(function($query) use ($searchterm) {
                                 $query->where('level', 2)
                                       ->where('name', 'like', $searchterm);
                             })
@@ -53,7 +48,7 @@ class CrudPetugas extends Component
 
     }
 
-    public function updatingSearch()
+    public function updatingSearchterm()
     {
         $this->resetPage();
     }
@@ -66,6 +61,8 @@ class CrudPetugas extends Component
         $this->password = '';
     }
 
+
+
     public function insert()
     {
         try {
@@ -77,7 +74,7 @@ class CrudPetugas extends Component
                 'password' => 'required|min:8',
             ]);
 
-            DB::table('users')->insert([
+            Petugas::create([
                 'name' => $this->name,
                 'username' => $this->username,
                 'email' => $this->email,
@@ -96,7 +93,7 @@ class CrudPetugas extends Component
 
     public function editId($id)
     {
-        $edit = Users::findOrFail($id);
+        $edit = Petugas::findOrFail($id);
         $this->editId = $id;
         $this->name = $edit->name;
         $this->username = $edit->username;
@@ -110,14 +107,13 @@ class CrudPetugas extends Component
         try {
             $this->validate([
                 'name' => 'required',
-                'username' => 'required',
-                'email' => 'required',
+                'username' => 'required|unique:users,username,' .$this->editId,
+                'email' => 'required|unique:users,username,' .$this->editId,
                 // 'level' => 'required',
                 // 'password' => 'required|min:8',
             ]);
 
-            DB::table('users')
-                ->where('id', $this->editId)
+            Petugas::where('id', $this->editId)
                 ->update([
                 'name' => $this->name,
                 'username' => $this->username,
@@ -143,7 +139,7 @@ class CrudPetugas extends Component
     public function delete()
     {
         try {
-            $this->UserModel->DeleteData($this->deleteId);
+            Petugas::where('id', $this->deleteId)->delete();
             $this->alertDeleteSuccess();
         } catch (\Throwable $th) {
             $this->alertError();
