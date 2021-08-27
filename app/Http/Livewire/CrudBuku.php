@@ -17,7 +17,7 @@ class CrudBuku extends Component
     public $deleteId = '';
     public $deletefoto = null;
     public $editId = '';
-    public $judul_buku, $penerbit, $penulis, $tahun_terbit, $foto_buku;
+    public $judul_buku, $penerbit, $penulis, $tahun_terbit, $foto_buku, $stok;
 
     protected $rules = [
         'judul_buku' => 'required',
@@ -25,6 +25,7 @@ class CrudBuku extends Component
         'penerbit' => 'required',
         'tahun_terbit' => 'required|digits:4|integer',
         'foto_buku' => 'image|mimes:jpg,jpeg,png,svg,gif,jfif',
+        'stok' => 'required|integer',
     ];
 
     public function render()
@@ -57,6 +58,7 @@ class CrudBuku extends Component
         $this->penerbit = '';
         $this->penulis = '';
         $this->tahun_terbit = '';
+        $this->stok= '';
         unset($this->foto_buku);
     }
 
@@ -75,6 +77,7 @@ class CrudBuku extends Component
                 'penerbit' => 'required',
                 'tahun_terbit' => 'required|digits:4|integer',
                 'foto_buku' => 'image|mimes:jpg,jpeg,png,svg,gif,jfif',
+                'stok' => 'required|integer',
             ]);
 
             $file = $this->foto_buku->store('buku image', 'public');
@@ -84,6 +87,7 @@ class CrudBuku extends Component
                 'penerbit' => $this->penerbit,
                 'penulis' => $this->penulis,
                 'tahun_terbit' => $this->tahun_terbit,
+                'stok' => $this->stok,
                 'foto_buku' => $file,
             ]);
             
@@ -103,6 +107,7 @@ class CrudBuku extends Component
         $this->penerbit = $edit->penerbit;
         $this->penulis = $edit->penulis;
         $this->tahun_terbit = $edit->tahun_terbit;
+        $this->stok = $edit->stok;
     }
 
     public function edit()
@@ -115,6 +120,7 @@ class CrudBuku extends Component
                     'penulis' => 'required',
                     'tahun_terbit' => 'required|digits:4|integer',
                     'foto_buku' => 'image|mimes:jpg,jpeg,png,svg,gif,jfif',
+                    'stok' => 'required|integer',
                 ]);
         
                 $file = $this->foto_buku->store('buku image', 'public');
@@ -125,14 +131,16 @@ class CrudBuku extends Component
                         'penerbit' => $this->penerbit,
                         'penulis' => $this->penulis,
                         'tahun_terbit' => $this->tahun_terbit,
+                        'stok' => $this->stok,
                         'foto_buku' => $file,
                     ]);
             } else {
                 $this->validate([
                     'judul_buku' => 'required',
                     'penerbit' => 'required',
-                    'penulis' => 'required|digits:4|integer',
-                    'tahun_terbit' => 'required',
+                    'penulis' => 'required',
+                    'tahun_terbit' => 'required|digits:4|integer',
+                    'stok' => 'required|integer',
                 ]);
         
                 buku::where('id_buku', $this->editId)
@@ -141,6 +149,7 @@ class CrudBuku extends Component
                         'penerbit' => $this->penerbit,
                         'penulis' => $this->penulis,
                         'tahun_terbit' => $this->tahun_terbit,
+                        'stok' => $this->stok,
                     ]);
             }
 

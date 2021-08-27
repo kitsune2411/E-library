@@ -34,6 +34,7 @@
                                 <td>{{ $data->penerbit }}</td>
                                 <td>{{ $data->tahun_terbit }}</td>
                                 <td><img loading="lazy" src="{{ asset('storage/'. $data->foto_buku) }}" alt="" width="200px"></td>
+                                <td>{{ $data->stok }}</td>
                                 <td class="px-4 py-2">
                                   <div class="vstack gap-2">
                                     <button type="button" wire:click="editId({{ $data->id_buku }})" class="btn btn-primary" data-toggle="modal" data-target="#EditModal">Edit</button>
@@ -103,6 +104,10 @@
                       <label for="tahun_terbit" class="col-form-label">Tahun Terbit</label>
                       <input type="text" class="form-control" id="terbit" name="tahun_terbit" wire:model="tahun_terbit" required>
                     </div>
+                    <div class="mb-3">
+                      <label for="stok" class="col-form-label">Stok</label>
+                      <input type="number" class="form-control" id="stok" name="stok" wire:model="stok" min="1" required>
+                    </div>
                     <div class="mb-2">
                       <label for="foto_buku" class="col-form-label">Foto Buku</label>
                       <div class="input-group">
@@ -154,6 +159,10 @@
                     <div class="mb-3">
                       <label for="tahun_terbit" class="col-form-label">Tahun Terbit</label>
                       <input type="text" class="form-control" id="terbit" name="tahun_terbit" wire:model="tahun_terbit" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="stok" class="col-form-label">Stok</label>
+                      <input type="number" class="form-control" id="stok" name="stok" wire:model="stok" min="1" required>
                     </div>
                     <div class="mb-3">
                       <label for="foto_buku" class="col-form-label">Foto Buku</label>
