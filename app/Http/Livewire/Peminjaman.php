@@ -19,7 +19,7 @@ class Peminjaman extends Component
             'book' => book::where('stok','>',0)->get(),
             'peminjaman' => ModelsPeminjaman::join('users','siswa_id','=','users.id')
                                 ->join('books','buku_id','=','books.id_buku')
-                                ->select('peminjaman.*','users.name','books.judul_buku')
+                                ->select('peminjaman.*','users.name','books.*')
                                 ->get(),
         ];
         return view('livewire.peminjaman', $data);

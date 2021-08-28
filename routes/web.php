@@ -8,6 +8,7 @@ use App\Http\Livewire\CrudSiswa;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\ListBuku;
 use App\Http\Livewire\Peminjaman;
+use App\Http\Livewire\Pengembalian;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,4 +47,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/buku/pinjam', Peminjaman::class)
         ->name('peminjaman ');
+
+    Route::get('/buku/kembali', Pengembalian::class)
+        ->name('penngembalian ');
 });
