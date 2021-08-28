@@ -11,4 +11,9 @@ class book extends Model
     protected $fillable = [
         'judul_buku', 'penulis', 'penerbit' , 'tahun_terbit','stok', 'foto_buku'
     ];
+
+    public function Pinjam()
+    {
+        return $this->belongsTo(peminjaman::class);
+    }
 }

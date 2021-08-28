@@ -7,6 +7,7 @@ use App\Http\Livewire\CrudBuku;
 use App\Http\Livewire\CrudSiswa;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\ListBuku;
+use App\Http\Livewire\Peminjaman;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,4 +43,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/cms/output', OutputCMS::class)
         ->name('outputCMS');
+
+    Route::get('/buku/pinjam', Peminjaman::class)
+        ->name('peminjaman ');
 });

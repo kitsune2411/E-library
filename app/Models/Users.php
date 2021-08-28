@@ -14,4 +14,9 @@ class Users extends Model
         'name','username', 'email', 'level', 'password'
     ];
 
+    public function pinjam()
+    {
+        return $this->belongsTo(peminjaman::class);
+    }
+
 }
