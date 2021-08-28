@@ -17,6 +17,7 @@ class CreatePeminjamansTable extends Migration
             $table->id();
             $table->foreignId('siswa_id')->unique();
             $table->foreignId('buku_id');
+            $table->timestamp('tanggal_dipinjam',0)->nullable();
             $table->timestamps();
 
             $table->foreign('siswa_id')->references('id')->on('users');

@@ -18,7 +18,7 @@ class CreateTableBooks extends Migration
             $table->string('judul_buku');
             $table->string('penulis');
             $table->string('penerbit');
-            $table->string('tahun_terbit');
+            $table->string('tahun_terbit',4);
             $table->integer('stok');
             $table->string('foto_buku');
             $table->timestamps();

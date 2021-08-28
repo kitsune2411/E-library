@@ -34,20 +34,14 @@ class Peminjaman extends Component
                 'tanggal_pinjam' => 'required',
             ]);
 
-            $check = ModelsPeminjaman::addSelect(['stok' => book::select('stok')
-                            ->where('id_buku', $this->buku)
-                            ->where('stok','>',0)
-                        ])->get();
+            book::where('id_buku', $this->buku)->decrement('stok',1);
 
-            if (count($check) > 0) {
-                book::where('id_buku', $this->buku)->decrement('stok',1);
-
-                ModelsPeminjaman::create([
+            ModelsPeminjaman::create([
                 'siswa_id' => $this->peminjam,
                 'buku_id' => $this->buku,
-                'created_at' => $this->tanggal_pinjam,
-                ]);
-            }
+                'tanggal_dipinjam' => $this->tanggal_pinjam,
+            ]);
+            
 
         } catch (\Throwable $th) {
             dd($th);

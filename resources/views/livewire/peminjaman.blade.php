@@ -43,7 +43,7 @@
                         </form>
 
                         @foreach ($peminjaman as $data)
-                           {{ $data->name }} pinjam {{ $data->judul_buku }} pada {{ $data->created_at }}
+                           {{ $data->name }} pinjam {{ $data->judul_buku }} pada {{ date('d-M-Y', strtotime($data->tanggal_dipinjam)) }}
                         @endforeach
                     </div>
                 </div>
