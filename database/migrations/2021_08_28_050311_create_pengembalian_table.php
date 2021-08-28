@@ -15,15 +15,11 @@ class CreatePengembalianTable extends Migration
     {
         Schema::create('pengembalian', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('peminjaman_id');
-            $table->foreignId('siswa_id');
-            $table->foreignId('buku_id');
+            $table->foreignId('peminjaman_id')->unique();
             $table->integer('denda');
             $table->timestamp('tanggal_dikembalikan',0)->nullable();
             $table->timestamps();
 
-            $table->foreign('siswa_id')->references('id')->on('users');
-            $table->foreign('buku_id')->references('id_buku')->on('books');
             $table->foreign('peminjaman_id')->references('id')->on('peminjaman');
         });
     }

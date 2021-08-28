@@ -18,8 +18,8 @@
                         <form  wire:submit.prevent='pinjam()'>
                             <div class="mb-3" id="input-peminjam">
                                 <label for="peminjam" class="col-form-label">Peminjam</label>
-                                <select class="form-select peminjam" id="peminjam" name="peminjam" wire:model="peminjam"     searchable="Search here.."required>
-                                    <option value="0"></option>
+                                <select class="form-select peminjam" id="peminjam" name="peminjam" wire:model="peminjam"     data-dropup-auto="false"required>
+                                    <option value=""></option>
                                     @foreach ($siswa as $peminjam)
                                     <option value="{{ $peminjam->id }}">{{ $peminjam->name }}</option>
                                     @endforeach
@@ -28,7 +28,7 @@
                             <div class="mb-3" id="input-buku">
                                 <label for="buku" class="col-form-label">Buku yang dipinjam</label>
                                 <select class="form-select buku" id="buku" name="buku" wire:model="buku" required>
-                                    <option value="0"></option>
+                                    <option value=""></option>
                                     @foreach ($book as $buku)
                                     <option value="{{ $buku->id_buku }}">{{ $buku->judul_buku }}</option>
                                     @endforeach

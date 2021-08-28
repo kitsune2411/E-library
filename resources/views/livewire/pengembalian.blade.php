@@ -19,7 +19,7 @@
                             <div class="mb-3" id="input-peminjam">
                                 <label for="peminjam" class="col-form-label">Peminjam</label>
                                 <select class="form-select peminjam" id="peminjam" name="peminjam" wire:model="peminjam"     searchable="Search here.."required>
-                                    <option value="0"></option>
+                                    <option value=""></option>
                                     @foreach ($siswa as $peminjam)
                                     <option value="{{ $peminjam->id }}">{{ $peminjam->name }}</option>
                                     @endforeach
@@ -28,21 +28,27 @@
                             <div class="mb-3" id="input-buku">
                                 <label for="buku" class="col-form-label">Buku yang dipinjam</label>
                                 <select class="form-select buku" id="buku" name="buku" wire:model="buku" required>
-                                    <option value="0"></option>
+                                    <option value=""></option>
                                     @foreach ($book as $buku)
                                     <option value="{{ $buku->id_buku }}">{{ $buku->judul_buku }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label for="tanggal_pinjam" class="col-form-label">Tanggal Pinjam</label>
-                                <input type="date" class="form-control" id="tanggal_pinjam" name="tanggal_pinjam" wire:model="tanggal_pinjam" required>
+                            <div class="row g-2">
+                                <div class="col-md">
+                                    <div class="mb-3">
+                                        <label for="tanggal_pinjam" class="col-form-label">Tanggal Pinjam</label>
+                                        <input type="date" class="form-control" id="tanggal_pinjam" name="tanggal_pinjam" wire:model="tanggal_pinjam" required>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="mb-3">
+                                        <label for="tanggal_pengembalian" class="col-form-label">Tanggal Pengembalian</label>
+                                        <input type="date" class="form-control" id="tanggal_pengembalian" name="tanggal_pengembalian" wire:model="tanggal_pengembalian" required>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="tanggal_pengembalian" class="col-form-label">Tanggal Pengembalian</label>
-                                <input type="date" class="form-control" id="tanggal_pengembalian" name="tanggal_pengembalian" wire:model="tanggal_pengembalian" required>
-                            </div>
-
+                            
                             <button class="btn btn-primary" type="submit" >Submit</button>
                         </form>
 

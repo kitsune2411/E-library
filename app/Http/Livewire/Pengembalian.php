@@ -63,15 +63,37 @@ class Pengembalian extends Component
 
             ModelsPengembalian::create([
                 'peminjaman_id'=> $id_peminjaman,
-                'siswa_id' => $this->peminjam,
-                'buku_id' => $this->buku,
                 'denda' => $denda,
                 'tanggal_dikembalikan' =>$this->tanggal_pengembalian,
             ]);
 
         } catch (\Throwable $th) {
-            //throw $th;
-            dd($th);
+            $errorCode = $th->errorInfo[1];
+            //error code for duplicate entry is 1062
+            if($errorCode == 1062){
+                // houston, we have a duplicate entry problem 
+                $this->alertDupliclateError();
+            } else {
+                $this->alertError();
+            }
         }
+    }
+
+    public function alertAddSuccess()
+    {
+        $this->dispatchBrowserEvent('alert', 
+        ['type' => 'success',  'message' => 'Buku berhasil dikembalikan!']);
+    }
+
+    public function alertDupliclateError()
+    {
+        $this->dispatchBrowserEvent('alert', 
+        ['type' => 'error',  'message' => 'Buku telah dikembalikan!']);
+    }
+
+    public function alertError()
+    {
+        $this->dispatchBrowserEvent('alert', 
+        ['type' => 'error',  'message' => 'Something is Wrong!' ]);
     }
 }
