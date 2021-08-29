@@ -76,8 +76,8 @@ class CrudBuku extends Component
                 'penulis' => 'required',
                 'penerbit' => 'required',
                 'tahun_terbit' => 'required|digits:4|integer',
-                'foto_buku' => 'image|mimes:jpg,jpeg,png,svg,gif,jfif',
                 'stok' => 'required|integer',
+                'foto_buku' => 'image|mimes:jpg,jpeg,png,svg,gif,jfif',
             ]);
 
             $file = $this->foto_buku->store('buku image', 'public');

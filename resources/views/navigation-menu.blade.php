@@ -26,6 +26,30 @@
                         <x-jet-nav-link href="{{ route('crud-buku') }}" :active="request()->routeIs('crud-buku')">
                             {{ __('Buku') }}
                         </x-jet-nav-link>
+                        <div class="ml-0 mt-4 relative">
+                            <x-jet-dropdown>
+                                <x-jet-nav-link href="{{ route('crud-buku') }}" :active="request()->routeIs('crud-buku')">
+                                    {{ __('Buku') }}
+                                </x-jet-nav-link>
+                                <x-slot name="trigger">
+                                    <span class="inline-flex rounded-md">
+                                        <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                </x-slot>
+                                <x-slot name="content">
+                                    <x-jet-dropdown-link href="{{ route('peminjaman') }}">
+                                        {{ __('Peminjaman') }}
+                                    </x-jet-dropdown-link>
+        
+                                    <x-jet-dropdown-link href="{{ route('pengembalian') }}">
+                                        {{ __('Pengembalian') }}
+                                    </x-jet-dropdown-link>
+                                </x-slot>
+                            </x-jet-dropdown>
+                        </div>
+                        
                     @elseif (auth()->user()->level == 2)
                         <!-- Petugas Perpustakaan -->
                         <x-jet-nav-link href="{{ route('crud-siswa') }}" :active="request()->routeIs('crud-siswa')">
@@ -34,6 +58,29 @@
                         <x-jet-nav-link href="{{ route('crud-buku') }}" :active="request()->routeIs('crud-buku')">
                             {{ __('Buku') }}
                         </x-jet-nav-link>
+                        <div class="ml-0 mt-4 relative">
+                            <x-jet-dropdown>
+                                <x-jet-nav-link href="{{ route('crud-buku') }}" :active="request()->routeIs('crud-buku')">
+                                    {{ __('Buku') }}
+                                </x-jet-nav-link>
+                                <x-slot name="trigger">
+                                    <span class="inline-flex rounded-md">
+                                        <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                </x-slot>
+                                <x-slot name="content">
+                                    <x-jet-dropdown-link href="{{ route('peminjaman') }}">
+                                        {{ __('Peminjaman') }}
+                                    </x-jet-dropdown-link>
+        
+                                    <x-jet-dropdown-link href="{{ route('pengembalian') }}">
+                                        {{ __('Pengembalian') }}
+                                    </x-jet-dropdown-link>
+                                </x-slot>
+                            </x-jet-dropdown>
+                        </div>
                     @elseif (auth()->user()->level == 3)
                         <!-- Siswa -->
                         <x-jet-nav-link href="{{ route('buku') }}" :active="request()->routeIs('buku')">

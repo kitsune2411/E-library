@@ -16,7 +16,6 @@ class Pengembalian extends Component
     use WithPagination;
     public $searchterm='';
     public $deleteId = '';
-    public $editId = '';
     public $buku, $tanggal_pengembalian,$peminjam, $tanggal_pinjam;
 
     public function render()
@@ -105,80 +104,18 @@ class Pengembalian extends Component
         }
     }
 
-    public function editId ($id)
-    {
-        $edit = ModelsPengembalian::join('peminjaman','peminjaman_id','=','peminjaman.id')
-                ->select('pengembalian.*','peminjaman.tanggal_dipinjam')
-                ->where('pengembalian.id', $id)->firstOrFail();
-        $this->editId = $id;
-        $this->peminjam = $edit->siswa_id;
-        $this->buku = $edit->buku_id;
-        $this->tanggal_pinjam = $edit->tanggal_dipinjam;
-        $this->tanggal_pengembalian = $edit->tanggal_dikembalikan;
-    }
-
-    public function edit()
-    {
-        try {
-            $data_peminjaman = peminjaman::
-                where('siswa_id', $this->peminjam)
-                ->where('buku_id', $this->buku)
-                ->where('tanggal_dipinjam', $this->tanggal_pinjam)
-                ->first();
-
-            $id_peminjaman = $data_peminjaman->id;
-
-            $tgl_pinjam = new Carbon($this->tanggal_pinjam);
-            $tgl_kembali = new Carbon($this->tanggal_pengembalian) ;
-
-            $due_pengembalian = $tgl_pinjam->addDays(5);
-
-            $hitungtelat = $due_pengembalian->diff($this->tanggal_pengembalian);
-            $telat = $hitungtelat->format('%r%a');
-
-            if ($telat > 0) {
-                $denda = $telat * 1000;            
-            } else {
-                $denda = 0;
-            }
-
-            $this->validate([
-                'peminjam' => 'required',
-                'buku' => 'required',
-                'tanggal_pinjam' => 'required',
-                'tanggal_pengembalian' => 'required',
-            ]);
-
-            ModelsPengembalian::where('id', $this->editId)
-            ->update([
-                'peminjaman_id'=> $id_peminjaman,
-                'denda' => $denda,
-                'tanggal_dikembalikan' =>$this->tanggal_pengembalian,
-            ]);
-
-            $this->alertUpdateSuccess();
-        } catch (\Throwable $th) {
-            $errorCode = $th->errorInfo[1];
-            //error code for duplicate entry is 1062
-            if($errorCode == 1062){
-                // houston, we have a duplicate entry problem 
-                $this->alertDupliclateError();
-            } else {
-                $this->alertError();
-            }
-        }
-    }
-
     public function deleteId($id)
     {
-        $delete = ModelsPengembalian::where('id', $id)->firstOrFail();
+        $delete = ModelsPengembalian::join('peminjaman','peminjaman_id','=','peminjaman.id')
+                    ->where('pengembalian.id', $id)->firstOrFail();
         $this->deleteId = $delete->id;
-        
+        $this->buku = $delete->buku_id;
     }
 
     public function delete()
     {
         try {
+            book::where('id_buku', $this->buku)->decrement('stok',1);
             ModelsPengembalian::where('id', $this->deleteId)->delete();
             $this->alertDeleteSuccess();
         } catch (\Throwable $th) {
@@ -190,12 +127,6 @@ class Pengembalian extends Component
     {
         $this->dispatchBrowserEvent('alert', 
         ['type' => 'success',  'message' => 'Buku berhasil dikembalikan!']);
-    }
-
-    public function alertUpdateSuccess()
-    {
-        $this->dispatchBrowserEvent('alert', 
-        ['type' => 'success',  'message' => 'Pengembalian Berhasil Diubah!']);
     }
 
     public function alertDeleteSuccess()

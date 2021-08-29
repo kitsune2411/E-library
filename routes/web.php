@@ -46,8 +46,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         ->name('outputCMS');
 
     Route::get('/buku/pinjam', Peminjaman::class)
-        ->name('peminjaman ');
+        ->name('peminjaman');
 
     Route::get('/buku/kembali', Pengembalian::class)
-        ->name('penngembalian ');
+        ->name('pengembalian');
 });
