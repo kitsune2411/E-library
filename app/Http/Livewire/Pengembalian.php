@@ -38,7 +38,7 @@ class Pengembalian extends Component
                                     ->paginate(5)
             ];
             return view('livewire.pengembalian', $data);
-        }else {
+        } else {
             abort(403);
         }
     }

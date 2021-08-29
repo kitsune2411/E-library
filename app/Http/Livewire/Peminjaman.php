@@ -18,19 +18,24 @@ class Peminjaman extends Component
 
     public function render()
     {
-        $searchterm ='%'. $this->searchterm. '%';
-        $data= [
-            'siswa' => Users::where('level',3)->get(),
-            'book' => book::where('stok','>',0)->get(),
-            'peminjaman' => ModelsPeminjaman::join('users','siswa_id','=','users.id')
-                                ->join('books','buku_id','=','books.id_buku')
-                                ->select('peminjaman.*','users.name','books.judul_buku')
-                                ->orWhere('users.name', 'like', $searchterm)
-                                ->orWhere('books.judul_buku', 'like', $searchterm)
-                                ->orWhere('peminjaman.tanggal_dipinjam', 'like', $searchterm)
-                                ->paginate(5),
-        ];
-        return view('livewire.peminjaman', $data);
+        if (auth()->user()->level == 1 || auth()->user()->level == 2 ) {
+            
+            $searchterm ='%'. $this->searchterm. '%';
+            $data= [
+                'siswa' => Users::where('level',3)->get(),
+                'book' => book::where('stok','>',0)->get(),
+                'peminjaman' => ModelsPeminjaman::join('users','siswa_id','=','users.id')
+                                    ->join('books','buku_id','=','books.id_buku')
+                                    ->select('peminjaman.*','users.name','books.judul_buku')
+                                    ->orWhere('users.name', 'like', $searchterm)
+                                    ->orWhere('books.judul_buku', 'like', $searchterm)
+                                    ->orWhere('peminjaman.tanggal_dipinjam', 'like', $searchterm)
+                                    ->paginate(5),
+            ];
+            return view('livewire.peminjaman', $data);
+        } else {
+            abort(403);
+        }
     }
 
     public function ResetInput()
