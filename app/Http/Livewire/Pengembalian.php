@@ -9,22 +9,47 @@ use App\Models\Users;
 use DateTime;
 use Livewire\Component;
 use Carbon\Carbon;
+use Livewire\WithPagination;
 
 class Pengembalian extends Component
 {
+    use WithPagination;
+    public $searchterm='';
+    public $deleteId = '';
+    public $editId = '';
     public $buku, $tanggal_pengembalian,$peminjam, $tanggal_pinjam;
 
     public function render()
     {
-        $data= [
-            'siswa' => Users::where('level',3)->get(),
-            'book' => book::where('stok','>',0)->get(),
-            'peminjaman' => peminjaman::join('users','siswa_id','=','users.id')
-                                ->join('books','buku_id','=','books.id_buku')
-                                ->select('peminjaman.*','users.name','books.*')
-                                ->get(),
-        ];
-        return view('livewire.pengembalian', $data);
+        if (auth()->user()->level == 1 || auth()->user()->level == 2 ) {
+
+            $searchterm ='%'. $this->searchterm. '%';
+            $data= [
+                'siswa' => Users::where('level',3)->get(),
+                'book' => book::where('stok','>',0)->get(),
+                'pengembalian' => ModelsPengembalian::join('peminjaman','peminjaman_id','=','peminjaman.id')
+                                    ->join('users','siswa_id','=','users.id')
+                                    ->join('books','buku_id','=','books.id_buku')
+                                    ->select('pengembalian.*','peminjaman.tanggal_dipinjam','users.name','books.judul_buku')
+                                    ->orWhere('users.name', 'like', $searchterm)
+                                    ->orWhere('books.judul_buku', 'like', $searchterm)
+                                    ->orWhere('peminjaman.tanggal_dipinjam', 'like', $searchterm)
+                                    ->orWhere('pengembalian.tanggal_dikembalikan', 'like', $searchterm)
+                                    ->orWhere('pengembalian.denda', 'like', $searchterm)
+                                    ->paginate(5)
+            ];
+            return view('livewire.pengembalian', $data);
+        }else {
+            abort(403);
+        }
+    }
+
+    public function ResetInput()
+    {
+        $this->peminjam = '';
+        $this->buku = '';
+        $this->tanggal_pinjam = '';
+        $this->tanggal_pengembalian = '';
     }
 
     public function kembalikan()
@@ -44,7 +69,7 @@ class Pengembalian extends Component
             $due_pengembalian = $tgl_pinjam->addDays(5);
 
             $hitungtelat = $due_pengembalian->diff($this->tanggal_pengembalian);
-            $telat = $hitungtelat->format('%a');
+            $telat = $hitungtelat->format('%r%a');
 
             if ($telat > 0) {
                 $denda = $telat * 1000;            
@@ -67,6 +92,7 @@ class Pengembalian extends Component
                 'tanggal_dikembalikan' =>$this->tanggal_pengembalian,
             ]);
 
+            $this->alertAddSuccess();
         } catch (\Throwable $th) {
             $errorCode = $th->errorInfo[1];
             //error code for duplicate entry is 1062
@@ -79,10 +105,103 @@ class Pengembalian extends Component
         }
     }
 
+    public function editId ($id)
+    {
+        $edit = ModelsPengembalian::join('peminjaman','peminjaman_id','=','peminjaman.id')
+                ->select('pengembalian.*','peminjaman.tanggal_dipinjam')
+                ->where('pengembalian.id', $id)->firstOrFail();
+        $this->editId = $id;
+        $this->peminjam = $edit->siswa_id;
+        $this->buku = $edit->buku_id;
+        $this->tanggal_pinjam = $edit->tanggal_dipinjam;
+        $this->tanggal_pengembalian = $edit->tanggal_dikembalikan;
+    }
+
+    public function edit()
+    {
+        try {
+            $data_peminjaman = peminjaman::
+                where('siswa_id', $this->peminjam)
+                ->where('buku_id', $this->buku)
+                ->where('tanggal_dipinjam', $this->tanggal_pinjam)
+                ->first();
+
+            $id_peminjaman = $data_peminjaman->id;
+
+            $tgl_pinjam = new Carbon($this->tanggal_pinjam);
+            $tgl_kembali = new Carbon($this->tanggal_pengembalian) ;
+
+            $due_pengembalian = $tgl_pinjam->addDays(5);
+
+            $hitungtelat = $due_pengembalian->diff($this->tanggal_pengembalian);
+            $telat = $hitungtelat->format('%r%a');
+
+            if ($telat > 0) {
+                $denda = $telat * 1000;            
+            } else {
+                $denda = 0;
+            }
+
+            $this->validate([
+                'peminjam' => 'required',
+                'buku' => 'required',
+                'tanggal_pinjam' => 'required',
+                'tanggal_pengembalian' => 'required',
+            ]);
+
+            ModelsPengembalian::where('id', $this->editId)
+            ->update([
+                'peminjaman_id'=> $id_peminjaman,
+                'denda' => $denda,
+                'tanggal_dikembalikan' =>$this->tanggal_pengembalian,
+            ]);
+
+            $this->alertUpdateSuccess();
+        } catch (\Throwable $th) {
+            $errorCode = $th->errorInfo[1];
+            //error code for duplicate entry is 1062
+            if($errorCode == 1062){
+                // houston, we have a duplicate entry problem 
+                $this->alertDupliclateError();
+            } else {
+                $this->alertError();
+            }
+        }
+    }
+
+    public function deleteId($id)
+    {
+        $delete = ModelsPengembalian::where('id', $id)->firstOrFail();
+        $this->deleteId = $delete->id;
+        
+    }
+
+    public function delete()
+    {
+        try {
+            ModelsPengembalian::where('id', $this->deleteId)->delete();
+            $this->alertDeleteSuccess();
+        } catch (\Throwable $th) {
+            $this->alertError();
+        }
+    }
+
     public function alertAddSuccess()
     {
         $this->dispatchBrowserEvent('alert', 
         ['type' => 'success',  'message' => 'Buku berhasil dikembalikan!']);
+    }
+
+    public function alertUpdateSuccess()
+    {
+        $this->dispatchBrowserEvent('alert', 
+        ['type' => 'success',  'message' => 'Pengembalian Berhasil Diubah!']);
+    }
+
+    public function alertDeleteSuccess()
+    {
+        $this->dispatchBrowserEvent('alert', 
+        ['type' => 'success',  'message' => 'Pengembalian Berhasil Dihapus!']);
     }
 
     public function alertDupliclateError()
