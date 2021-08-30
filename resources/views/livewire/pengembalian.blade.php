@@ -2,7 +2,7 @@
     {{-- If you look to others for fulfillment, you will never truly be fulfilled. --}}
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Peminjaman Buku') }}
+            {{ __('Pengembalian Buku') }}
         </h2>
     </x-slot>
 
@@ -10,7 +10,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="pb-10 px-12">
-                    <button type="button" wire:click="ResetInput()" class="btn btn-success m-4" data-toggle="modal" data-target="#AddModal">Pengembalian Buku</button>
+                    <button type="button" wire:click="ResetInput()" class="btn btn-success m-4" data-toggle="modal" data-target="#AddModal">Kembalikan Buku</button>
                     <div class="mb-3">
                       <input type="text" id="search" class="form-control" wire:model="searchterm" placeholder="Type to search pengembalian..."/>
                     </div>

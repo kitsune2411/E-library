@@ -18,7 +18,7 @@
                     <div class="card m-3" wire:poll.visible>
                         <div class="row g-0">
                             <div class="col-md-4">
-                                <img loading="lazy" src="{{ asset('storage/'. $data->foto_buku) }}" class="img-fluid rounded-start"
+                                <img src="{{ asset('storage/'. $data->foto_buku) }}" class="img-fluid rounded-start"
                                     alt="..." width="250px">
                             </div>
                             <div class="col-md-8">

@@ -35,7 +35,7 @@
                                 <td>{{ $data->penerbit }}</td>
                                 <td>{{ $data->tahun_terbit }}</td>
                                 <td class="px-4">{{ $data->stok }}</td>
-                                <td><img loading="lazy" src="{{ asset('storage/'. $data->foto_buku) }}" alt="" width="200px"></td>
+                                <td><img src="{{ asset('storage/'. $data->foto_buku) }}" alt="" width="200px"></td>
                                 <td class="px-4 py-2">
                                   <div class="vstack gap-2">
                                     <button type="button" wire:click="editId({{ $data->id_buku }})" class="btn btn-primary" data-toggle="modal" data-target="#EditModal">Edit</button>

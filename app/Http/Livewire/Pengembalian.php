@@ -11,8 +11,6 @@ use Livewire\Component;
 use Carbon\Carbon;
 use Livewire\WithPagination;
 
-use function PHPUnit\Framework\throwException;
-
 class Pengembalian extends Component
 {
     use WithPagination;
@@ -27,7 +25,7 @@ class Pengembalian extends Component
             $searchterm ='%'. $this->searchterm. '%';
             $data= [
                 'siswa' => Users::where('level',3)->get(),
-                'book' => book::where('stok','>',0)->get(),
+                'book' => book::all(),
                 'pengembalian' => ModelsPengembalian::join('peminjaman','peminjaman_id','=','peminjaman.id')
                                     ->join('users','siswa_id','=','users.id')
                                     ->join('books','buku_id','=','books.id_buku')
