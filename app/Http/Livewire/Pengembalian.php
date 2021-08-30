@@ -11,6 +11,8 @@ use Livewire\Component;
 use Carbon\Carbon;
 use Livewire\WithPagination;
 
+use function PHPUnit\Framework\throwException;
+
 class Pengembalian extends Component
 {
     use WithPagination;
@@ -72,6 +74,8 @@ class Pengembalian extends Component
 
             if ($telat > 0) {
                 $denda = $telat * 1000;            
+            } elseif ($tgl_kembali->lt($tgl_pinjam)) {
+               throw new \Exception(908);// 908 = tanggal pengembalian salah ( i made this up )
             } else {
                 $denda = 0;
             }
@@ -93,11 +97,21 @@ class Pengembalian extends Component
 
             $this->alertAddSuccess();
         } catch (\Throwable $th) {
-            $errorCode = $th->errorInfo[1];
-            //error code for duplicate entry is 1062
-            if($errorCode == 1062){
-                // houston, we have a duplicate entry problem 
-                $this->alertDupliclateError();
+            if ($th->getMessage() == '908') {
+                $this->alertPengembalianDateError();
+            } elseif ($th->getCode() == 0) {
+                //error code for something is Null or not found
+                $this->alertNotFound();
+                dd($th);
+            } elseif (isset($th->errorInfo)) {
+                $errorCode = $th->errorInfo[1];
+                //error code for duplicate entry is 1062
+                if($errorCode == 1062){
+                    // houston, we have a duplicate entry problem 
+                    $this->alertDupliclateError();
+                } else {
+                    $this->alertError();
+                }
             } else {
                 $this->alertError();
             }
@@ -108,7 +122,7 @@ class Pengembalian extends Component
     {
         $delete = ModelsPengembalian::join('peminjaman','peminjaman_id','=','peminjaman.id')
                     ->where('pengembalian.id', $id)->firstOrFail();
-        $this->deleteId = $delete->id;
+        $this->deleteId = $id;
         $this->buku = $delete->buku_id;
     }
 
@@ -135,10 +149,22 @@ class Pengembalian extends Component
         ['type' => 'success',  'message' => 'Pengembalian Berhasil Dihapus!']);
     }
 
+    public function alertNotFound()
+    {
+        $this->dispatchBrowserEvent('alert', 
+        ['type' => 'error',  'message' => 'Peminjaman tidak ditemukan!']);
+    }
+
     public function alertDupliclateError()
     {
         $this->dispatchBrowserEvent('alert', 
         ['type' => 'error',  'message' => 'Buku telah dikembalikan!']);
+    }
+
+    public function alertPengembalianDateError()
+    {
+        $this->dispatchBrowserEvent('alert', 
+        ['type' => 'error',  'message' => 'Upss, Tanggal pengembalian sebelum tanggal peminjaman!']);
     }
 
     public function alertError()
