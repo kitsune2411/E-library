@@ -74,7 +74,7 @@ class Pengembalian extends Component
 
             if ($telat > 0) {
                 $denda = $telat * 1000;            
-            } elseif ($tgl_kembali->lt($tgl_pinjam)) {
+            } elseif ($telat < -5) {
                throw new \Exception(908);// 908 = tanggal pengembalian salah ( i made this up )
             } else {
                 $denda = 0;
