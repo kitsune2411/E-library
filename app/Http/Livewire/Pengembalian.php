@@ -95,12 +95,11 @@ class Pengembalian extends Component
 
             $this->alertAddSuccess();
         } catch (\Throwable $th) {
-            if ($th->getMessage() == '908') {
-                $this->alertPengembalianDateError();
-            } elseif ($th->getCode() == 0) {
+            if ($th->getCode() == 0) {
                 //error code for something is Null or not found
                 $this->alertNotFound();
-                dd($th);
+            } elseif ( $th->getMessage() == '908') {
+                $this->alertPengembalianDateError();
             } elseif (isset($th->errorInfo)) {
                 $errorCode = $th->errorInfo[1];
                 //error code for duplicate entry is 1062
